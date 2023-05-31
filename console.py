@@ -52,7 +52,11 @@ class Linky(cmd.Cmd):
                 print("** use format: `create User <first name> <surname> <email> <password>` **")
                 return
             else:
-                instance = globals()[data[0]](data[1], data[2], data[3], data[4])
+                instance = globals()[data[0]]()
+                instance.fname = data[1]
+                instance.sname = data[2]
+                instance.email = data[3]
+                instance.password = data[4]
                 instance.save()
                 print(instance.id)
                 return 
@@ -109,6 +113,31 @@ class Linky(cmd.Cmd):
 
     def do_update(self, line):
         data = line.split()
+        if data != "":
+            if len(data) == 0:
+                print("** class name missing **")
+            elif data[0] not in storage.classes():
+                print("** class doesn't exist **")
+            elif data[1]:
+                for k, v in storage.all().items():
+                    if v.id == data[1]:
+                        if data[2] == 'fname':
+                            v.fname = data[3]
+                        elif data[2] == 'email':
+                            v.email = data[3]
+                        elif data[2] == 'sname':
+                            v.sname = data[3]
+                        elif data[2] == 'password':
+                            password = data[3]
+                        else:
+                            pass
+                        print("** Object exists, proceeding with modification **")
+                        return
+                storage.save()
+                print("** Object doesn't exist **")
+            else:
+                print("** instance id missing **") 
+
 
 
 if __name__ == "__main__":
