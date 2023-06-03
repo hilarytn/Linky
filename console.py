@@ -5,6 +5,7 @@ from models.base_model import BaseModel
 #from models.base_model import classes
 from models.user import User
 from models.vendor import Vendor
+from models.product import Product
 from models import storage
 from models.engine.file_storage import FileStorage
 import re
@@ -39,13 +40,20 @@ class Linky(cmd.Cmd):
 
         if len(data) >= 1 and data[0] and data[0] == 'Vendor':
             if len(data) < 5:
-                print("** use format: `create Vendor <first name> <surname> <email> <address>` **")
+                print("** use format: `create Vendor <first name> <surname> <email> <password> <address>` **")
                 return 
-            else:
-                instance = globals()[data[0]](data[1], data[2], data[3], data[4])
+ 
+            if len(data) == 6:
+                instance = globals()[data[0]]()
+                instance.fname = data[1]
+                instance.sname = data[2]
+                instance.email = data[3]
+                instance.password = data[4]
+                instance.address = data[5]
                 instance.save()
                 print(instance.id)
-                return
+            else:
+                pass
 
         if len(data) >= 1 and data[0] and data[0] == 'User':
             if len(data) < 5:
@@ -59,9 +67,36 @@ class Linky(cmd.Cmd):
                 instance.password = data[4]
                 instance.save()
                 print(instance.id)
-                return 
+                return
 
-        if len(data) >= 1 and data[0] in storage.classes():
+        if len(data) >= 1 and data[0] and data[0] == 'Product':
+            if len(data) < 2:
+                print("** use format: `create Product <product name>` **")
+                return
+
+            if len(data) == 2:
+                instance = globals()[data[0]]()
+                instance.product_name = data[1]
+                instance.save()
+                print(instance.id)
+            else:
+                pass
+
+        if len(data) >= 1 and data[0] and data[0] == 'User':
+            if len(data) < 5:
+                print("** use format: `create User <first name> <surname> <email> <password>` **")
+                return
+            else:
+                instance = globals()[data[0]]()
+                instance.fname = data[1]
+                instance.sname = data[2]
+                instance.email = data[3]
+                instance.password = data[4]
+                instance.save()
+                print(instance.id)
+                return
+
+        if len(data) >= 1 and data[0] in storage.classes() and data[0] == 'BaseModel':
             instance = globals()[data[0]]()
             instance.save()
             print(instance.id)
@@ -91,24 +126,25 @@ class Linky(cmd.Cmd):
             print("** class doesn't exist **")
 
         if len(data) == 1 and data[0] in storage.classes():
-            for k, v in storage.all().items():
-                if v.__class__.__name__ == data[0]:
-                    print(v)
+            cls = globals()[data[0]]
+            unique_obj = storage.all(cls)
+            for v in unique_obj.values():
+                print(v)
 
     def do_destroy(self, line):
         data = line.split()
         if len(data) == 0:
             print("** class name missing **")
-        elif len(data) > 0 and data[0] not in storage.classes():
+        if len(data) > 0 and data[0] not in storage.classes():
             print("** class doesn't exist **")
-        elif len(data) == 1 and data[0] in storage.classes():
+        if len(data) == 1 and data[0] in storage.classes():
             print("** instance id missing **")
-        elif len(data) == 2 and data[0] in storage.classes() and data[1]:
-            for k, v in storage.all().items():
+        if len(data) == 2 and data[0] in storage.classes() and data[1]:
+            for k, v in storage.all().copy().items():
                 if v.id == data[1]:
                     del storage.all()[k]
                     storage.save()
-                    return
+        else:
             print("** no instance found **")
 
     def do_update(self, line):

@@ -6,11 +6,18 @@ class FileStorage:
     __file_path = 'file.json'
     __objects = {}
 
-    def all(self):
+    def all(self, cls=None):
         if FileStorage.__objects != {} or FileStorage.__objects is not None:
-            return FileStorage.__objects
-        else:
-            pass
+            if cls is not None:
+                objects = FileStorage.__objects
+                my_list = {}
+                for k, v in objects.copy().items():
+                    if v.__class__ == cls:
+                        my_list.update({k:v})
+                return my_list
+            else:
+                return FileStorage.__objects
+        
 
     def new(self, obj):
         key = type(obj).__name__
@@ -29,14 +36,15 @@ class FileStorage:
         from models.base_model import BaseModel
         from models.user import User
         from models.vendor import Vendor
-        #from models.city import City
+        from models.product import Product
         #from models.amenity import Amenity
         #from models.place import Place
         #from models.review import Review
 
         classes = {"BaseModel": BaseModel,
                    "User": User,
-                   "Vendor": Vendor
+                   "Vendor": Vendor,
+                   "Product": Product
                    #"State": State,
                    #"City": City,
                    #"Amenity": Amenity,
@@ -49,7 +57,16 @@ class FileStorage:
         if os.path.exists(FileStorage.__file_path):
             with open(FileStorage.__file_path, 'r', encoding="utf-8") as f:
                 new_obj = json.load(f)
-                reloaded = {k : self.classes()[v["__class__"]](**v) for k, v in new_obj.items()}  #globals()[v["__class__"]](**v)
+                reloaded = {k : self.classes()[v["__class__"]](**v) for k, v in new_obj.items()}
                 FileStorage.__objects = reloaded
+        else:
+            pass
+
+    def delete(self, obj=None):
+        if obj is not None:
+            objects = FileStorage.__objects
+            for k, v in objects.copy().items():
+                if obj == v:
+                    del FileStorage.__objects[k]
         else:
             pass
