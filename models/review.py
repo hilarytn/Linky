@@ -3,6 +3,5 @@ from models.base_model import BaseModel
 from models import storage
 
 
-class Product(BaseModel):
-        product_name = ''
-
+class Review(BaseModel):
+        review = ''
