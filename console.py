@@ -6,6 +6,8 @@ from models.base_model import BaseModel
 from models.user import User
 from models.vendor import Vendor
 from models.product import Product
+from models.service import Service
+from models.review import Review
 from models import storage
 from models.engine.file_storage import FileStorage
 import re
@@ -101,6 +103,31 @@ class Linky(cmd.Cmd):
             instance.save()
             print(instance.id)
 
+        if len(data) >= 1 and data[0] and data[0] == 'Service':
+            if len(data) < 2:
+                print("** use format: `create Service <Service name>` **")
+                return
+
+            if len(data) == 2:
+                instance = globals()[data[0]]()
+                instance.service_name = data[1]
+                instance.save()
+                print(instance.id)
+            else:
+                pass
+
+        if len(data) >= 1 and data[0] and data[0] == 'Review':
+            if len(data) < 2:
+                print("** use format: `create Review <Review 'Good' or 'Bad'>` **")
+                return
+
+            if len(data) == 2:
+                instance = globals()[data[0]]()
+                instance.review = data[1]
+                instance.save()
+                print(instance.id)
+            else:
+                pass
 
     def do_show(self, line):
         data = line.split()
