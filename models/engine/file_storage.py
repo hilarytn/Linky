@@ -37,19 +37,16 @@ class FileStorage:
         from models.user import User
         from models.vendor import Vendor
         from models.product import Product
-        #from models.amenity import Amenity
-        #from models.place import Place
-        #from models.review import Review
+        from models.service import Service
+        from models.review import Review
+
 
         classes = {"BaseModel": BaseModel,
                    "User": User,
                    "Vendor": Vendor,
                    "Product": Product
-                   #"State": State,
-                   #"City": City,
-                   #"Amenity": Amenity,
-                   #"Place": Place,
-                   #"Review": Review
+                   "Service": Service,
+                   "Review": Review
                    }
         return classes
 
