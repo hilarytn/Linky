@@ -44,7 +44,7 @@ class FileStorage:
         classes = {"BaseModel": BaseModel,
                    "User": User,
                    "Vendor": Vendor,
-                   "Product": Product
+                   "Product": Product,
                    "Service": Service,
                    "Review": Review
                    }
