@@ -2,14 +2,8 @@
 import cmd
 import time
 from models.base_model import BaseModel
-#from models.base_model import classes
-from models.user import User
-from models.vendor import Vendor
-from models.product import Product
-from models.service import Service
-from models.review import Review
+from models.contact import Contact
 from models import storage
-from models.engine.file_storage import FileStorage
 import re
 
 
@@ -40,19 +34,19 @@ class Linky(cmd.Cmd):
         if len(data) > 0 and data[0] not in storage.classes():
             print("** class doesn't exist **")
 
-        if len(data) >= 1 and data[0] and data[0] == 'Vendor':
+        if len(data) >= 1 and data[0] and data[0] == 'Contact':
             if len(data) < 5:
                 print("** use format: `create Vendor <first name> <surname> <email> <password> <address>` **")
                 return 
  
             if len(data) == 6:
                 instance = globals()[data[0]]()
-                instance.fname = data[1]
-                instance.sname = data[2]
-                instance.email = data[3]
-                instance.password = data[4]
-                instance.address = data[5]
-                instance.save()
+                instance.first_name = data[1]
+                instance.location = data[2]
+                instance.specialization = data[3]
+                instance.employer = data[4]
+                instance.image_url = data[5]
+                instance
                 print(instance.id)
             else:
                 pass

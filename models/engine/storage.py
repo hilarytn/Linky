@@ -18,6 +18,13 @@ class Storage:
     def __init__(self):
         self.__engine = create_engine('mysql+mysqldb://{}:{}@localhost/{}'.format('kontact', 'kontact_JUNE2023', 'kontact', pool_pre_ping=True))
 
+    def classes(self):
+        """Returns a dictionary of valid classes and their references"""
+        from models.contact import Contact
+
+        classes = {"Contact": Contact}
+        return classes
+
     def all(self, cls=None):
         """return a dictionary
         Return:
