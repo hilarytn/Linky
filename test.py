@@ -18,3 +18,6 @@ if __name__ == "__main__":
         storage.save() 
     except IndexError:
         print("Please supply arguments")
+
+
+    storage.delete(contact)

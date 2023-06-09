@@ -33,11 +33,11 @@ class Storage:
         obj_dict = {}
         if cls is None:
             for obj in self.__session.query(Contact).all():
-                key = "{}".format(obj.id)
+                key = "{}.{}".format(type(obj).__name__, obj.id)
                 obj_dict[key] = obj
         else:
             for obj in self.__session.query(cls).all():
-                key = "{}".format(obj.id)
+                key = "{}.{}".format(cls.__name__, obj.id)
                 obj_dict[key] = obj
         return obj_dict
 
