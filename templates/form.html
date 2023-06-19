@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="{{ url_for('static', filename='form.css') }}">
+    <link rel="icon" type="image/png" href="Linky_icon.PNG">
+    <title>Linky - Update Link</title>
+</head>
+<body>
+    <header></header>
+    <h3 class="form-heading">Update Link</h3>
+    <form id="myForm" action="{{ url_for('update_contact') }}"  method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="nameInput">First Name:</label>
+            <input type="text" name="name" id="nameInput" placeholder="{{ contact['first_name'] }}">
+            </div>
+        <div class="form-group">
+            <label for="descriptionInput">Last Name:</label>
+            <input type="text" name="description" id="descriptionInput" placeholder="{{ contact['first_name'] }}">
+        </div>
+        <div class="form-group">
+            <label for="priceInput">Specialization:</label>
+            <input type="text" name="price" id="priceInput" placeholder="{{ contact['specialization'] }}">
+        </div>
+        <div class="form-group">
+            <label for="categoryInput">Description:</label>
+            <input type="text" name="category" id="categoryInput" placeholder="{{ contact['specialization'] }}">
+        </div>
+        <div class="form-group">
+          <label for="pictureInput">Picture:</label>
+          <input type="file" name="picture" id="pictureInput">
+        </div> 
+        <button type="submit">Update</button>
+      </form>
+</body>
+</html>
