@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='header.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='form.css') }}">
+    <link rel="icon" type="image/png" href="Linky_icon.PNG">
+    <title>Linky</title>
+</head>
+<body>
+    <header></header>
+    <div class="container">
+        <aside class="aside">
+            <div class="menu-toggle">
+                <span class="toggle-icon">&#9776;</span>
+            </div>
+            <nav class="side-menu">
+                <ul>
+                    <li><button id = "addButton" class="menu-button add-button">Add New Link<span class="symbol">+</span> </button></li>
+                    <form id="myForm" action="{{ url_for('create_contact') }}"  class="hidden" method="POST" enctype="multipart/form-data">
+                      <div class="form-group">
+                          <label for="nameInput">First Name:</label>
+                          <input type="text" name="name" id="nameInput" placeholder="First Name">
+                          </div>
+                      <div class="form-group">
+                          <label for="descriptionInput">Last Name:</label>
+                          <input type="text" name="description" id="descriptionInput" placeholder="Last Name">
+                      </div>
+                      <div class="form-group">
+                          <label for="priceInput">Specialization:</label>
+                          <input type="text" name="price" id="priceInput" placeholder="Specialization">
+                      </div>
+                      <div class="form-group">
+                          <label for="categoryInput">Description:</label>
+                          <input type="text" name="category" id="categoryInput" placeholder="Description">
+                      </div>
+                      <div class="form-group">
+                        <label for="pictureInput">Picture:</label>
+                        <input type="file" name="picture" id="pictureInput">
+                      </div> 
+                      <button type="submit">Create</button>
+                    </form>
+                    
+                </ul>
+            </nav>
+        </aside>
+        <div class="card-container">
+            {% for item in k %}
+            <div class="card">
+              <img src="{{ url_for('static', filename='WhatsApp Image 2023-04-03 at 10.18.53.jpg') }}" alt="Card Image" class="card-image">
+                <div class="card-content">
+                    <h2 class="card-title">{{ item["name"]}}</h2>
+		                <span class="card-skill">{{ item["skill"] }}</span>
+                    <p class="card-description">Specializes in {{ item["skill"] }}</p>
+                    <a href="{{ url_for('update_contact', contact_id=item['id']) }}" class="card-link">More >></a>
+
+                    <div class="delete-button-container">
+                          <button style="font-size:10px; border:0;  margin-right: 45px; cursor: pointer;" class="delete-button" data-contact-id="{{ item['id'] }}">
+                              <i class="material-icons">delete_forever</i>
+                          </button>
+                          <a href="{{ url_for('update_contact', contact_id=item['id']) }}" class="card-update-button" data-contact-id="{{ item['id'] }}">
+                            <i class="material-icons">mode_edit</i></a>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+    </div>
+    
+
+    <script>
+        // JavaScript code here
+      const toggleIcon = document.querySelector('.toggle-icon');
+      const sideMenu = document.querySelector('.side-menu');
+      
+      toggleIcon.addEventListener('click', function() {
+        sideMenu.classList.toggle('show-menu');
+      });
+
+    document.addEventListener('DOMContentLoaded', function() {
+    const deleteButtons = document.querySelectorAll('.delete-button');
+
+    deleteButtons.forEach(function(button) {
+        button.addEventListener('click', function() {
+            const contactId = this.getAttribute('data-contact-id');
+            fetch(`/delete-contact/${contactId}`, {
+                method: 'POST'
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Successful delete, you can perform any necessary UI updates
+                    console.log('Contact deleted successfully');
+                    location.reload()
+                } else {
+                    // Failed to delete, handle the error
+                    console.error('Failed to delete contact');
+                }
+            })
+            .catch(error => {
+                console.error('An error occurred while deleting the contact', error);
+            });
+        });
+    });
+});
+    document.addEventListener('DOMContentLoaded', function() {
+        const updateButtons = document.querySelectorAll('.card-update-button');
+
+        updateButtons.forEach(function(button) {
+             button.addEventListener('click', function() {
+                const contactId = this.getAttribute('data-contact-id');
+                fetch(`/update-contact/${contactId}`, {
+                method: 'POST'
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Successful delete, you can perform any necessary UI updates
+                    console.log('Contact updated successfully');
+                    //location.reload()
+                } else {
+                    // Failed to updatete, handle the error
+                    console.error('Failed to update contact');
+                }
+            })
+            .catch(error => {
+                console.error('An error occurred while updating the contact', error);
+            });
+        });
+    });
+});
+
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script>
+      $(document).ready(function() {
+          $('#addButton').click(function() {
+            $('#myForm').toggle();
+            if ($('#myForm').is(':visible')) {
+              $(this).html('Hide Form <span class="symbol">-</span>');
+            } else {
+              $(this).html('Add New Link <span class="symbol">+</span>');
+            }
+          });
+        });
+
+        $(document).ready(function() {
+          $('#card-update-button').click(function() {
+            $('#myForm').toggle();
+            if ($('#myForm').is(':visible')) {
+              $().html('Hide Form <span class="symbol">-</span>');
+            } 
+          });
+        });
+
+
+
+      
+
+
+    </script>
+</body>
+</html
