@@ -1,0 +1,23 @@
+/*
+ * === Header style ===
+ */
+
+/* Header style */
+header {
+    height: 70px;
+    width: 100%;
+    background-color: white;
+    margin: 0;
+    padding: 0;
+    top: 0;
+    border-bottom: 1px solid #CCCCCC;
+  }
+  
+  .logo {
+      margin-left: 20px;
+      height: 100%;
+      width: 142px;
+      background-image: url("../images/hbnb_logo.png");
+      background-repeat: no-repeat;
+      background-position: center;
+  }
