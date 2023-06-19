@@ -16,7 +16,7 @@ class Storage:
     __session = None
 
     def __init__(self):
-        self.__engine = create_engine('mysql+mysqldb://{}:{}@localhost/{}'.format('kontact', 'kontact_JUNE2023', 'kontact', pool_pre_ping=True))
+        self.__engine = create_engine('mysql+mysqldb://{}:{}@localhost/{}'.format('linky', 'linky_June2023', 'linky_db', pool_pre_ping=True))
 
     def classes(self):
         """Returns a dictionary of valid classes and their references"""
