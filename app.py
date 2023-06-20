@@ -79,6 +79,9 @@ def update_contact(contact_id):
         else:
             print("Not found")
 
+@app.route('/blog')
+def blog():
+    return render_template("blog.html")
 
 @app.teardown_appcontext
 def teardown_db(self):
