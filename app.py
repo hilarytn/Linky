@@ -56,8 +56,6 @@ def delete_contact(contact_id):
 @app.route('/update-contact/<contact_id>', methods=['GET', 'POST'], strict_slashes=False)
 def update_contact(contact_id):
     contact = storage.get("Contact", contact_id)
-    storage.delete(contact)
-    storage.save()
     if request.method == 'GET':
         return render_template("form.html", contact=contact)
 
@@ -66,11 +64,11 @@ def update_contact(contact_id):
         # Retrieve form data and update the contact object
         first_name_form = request.form.get('name')
         location_form = request.form.get('description')
-        specialization_form = request.get('price')
+        specialization_form = request.form.get('price')
         employer_form = request.form.get('category')
         #employer = request.form.get('category')
 
-        if contact['id'] == contact_id:
+        if contact.id == contact_id:
             contact.first_name = first_name_form
             contact.location = location_form
             contact.specialization = specialization_form

@@ -11,7 +11,7 @@
 <body>
     <header></header>
     <h3 class="form-heading">Update Link</h3>
-    <form id="myForm" action="{{ url_for('update_contact') }}"  method="POST" enctype="multipart/form-data">
+    <form id="myForm" action="{{ url_for('update_contact', contact_id=contact['id']) }}"  method="POST" enctype="multipart/form-data">
         <div class="form-group">
             <label for="nameInput">First Name:</label>
             <input type="text" name="name" id="nameInput" placeholder="{{ contact['first_name'] }}">
