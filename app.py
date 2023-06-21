@@ -3,8 +3,13 @@ from flask import Flask, jsonify, render_template, url_for, request, redirect
 from models.contact import Contact
 from models import storage
 import copy
+import os
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
+
+UPLOAD_FOLDER = os.path.join(app.root_path, 'static', 'uploads')
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route("/") 
 def hello():
@@ -32,15 +37,19 @@ def create_contact():
         specialization = request.form.get('price')
         employer = request.form.get('category')
         picture = request.files['picture']
-        picture_data = picture.read()
+        
 
-    if first_name and location and specialization and employer:
+    if first_name and location and specialization and employer and picture:
         new_contact = Contact(first_name=first_name, location=location, specialization=specialization, employer=employer)#, image_url=picture_data)
+        filename = new_contact.id + '.jpg'
+        picture.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         storage.new(new_contact)
         storage.save()
+	
         return redirect(url_for('hello'))
     else:
-        return "Please provide all the required information for creating a contact."
+        return "Please provide all the required information for creating a contact. Don't forget to upload a jpg picture format"
+
 
 @app.route('/delete-contact/<contact_id>', methods=['POST', 'GET'], strict_slashes=False)
 def delete_contact(contact_id):
@@ -66,13 +75,30 @@ def update_contact(contact_id):
         location_form = request.form.get('description')
         specialization_form = request.form.get('price')
         employer_form = request.form.get('category')
+        picture = request.files['picture']
         #employer = request.form.get('category')
 
         if contact.id == contact_id:
-            contact.first_name = first_name_form
-            contact.location = location_form
-            contact.specialization = specialization_form
-            contact.employer = employer_form
+            if first_name_form:
+                contact.first_name = first_name_form
+            else:
+                contact.first_name = contact.first_name
+            if location_form:
+                contact.location = location_form
+            else:
+                contact.location = contact.location
+            if specialization_form:
+                contact.specialization = specialization_form
+            else:
+                contact.specialization = contact.specialization
+            if employer_form:
+                contact.employer = employer_form
+            else:
+                contact.employer = contact.employer
+            if picture:
+                filename = contact.id + '.jpg'
+                picture.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
             storage.save()
 
             return redirect(url_for('hello'))

@@ -18,8 +18,7 @@
     <header>
 	     <img class="logo" src="static/Asset 3.png" alt="Logo">
              <div class="button-container">
-    		<button class="card-link">Add Link +</button>
-    		<button class="card-link"><a href="{{ url_for('blog') }}" class="card-link">Blog >></a></button>
+    		<button class="card-link"><a href="{{ url_for('blog') }}" class="card-link">Project Blog Post >></a></button>
   	     </div>
     </header>
     <div class="container">
@@ -60,7 +59,7 @@
         <div class="card-container">
             {% for item in k %}
             <div class="card">
-              <img src="{{ url_for('static', filename='WhatsApp Image 2023-04-03 at 10.18.53.jpg') }}" alt="Card Image" class="card-image">
+		<img src="{{ url_for('static', filename='uploads/' + item['id'] + '.jpg') }}" alt="Card Image" class="card-image">
                 <div class="card-content">
                     <h2 class="card-title">{{ item["name"]}}</h2>
 		                <span class="card-skill">{{ item["skill"] }}</span>
