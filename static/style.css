@@ -83,6 +83,16 @@ body {
   .symbol {
       text-align: right;
   }
+
+footer {
+        text-align: center;
+        background-color: #007bff;
+        color: white;
+}
+
+.footer-container{
+        padding: 20px;
+}
   
   @media (max-width: 768px) {
     .container {

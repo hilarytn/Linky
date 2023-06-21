@@ -55,8 +55,13 @@ def create_contact():
 def delete_contact(contact_id):
     # Helper method to delete a contact
     contact = storage.get("Contact", contact_id)
+    filename = contact.id + '.jpg'
+    picture_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    if os.path.exists(picture_path):
+        os.remove(picture_path)
     storage.delete(contact)
     storage.save()
+
     if contact:
         # Perform the delete operation
         
